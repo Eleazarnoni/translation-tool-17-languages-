@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Translation Tool - 17 Languages - Eleazar</title>
+<title>AI Translation Tool - 17 Languages - Eleazar Ofutet</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>body{font-family:Arial;background:#111;color:white;padding:20px}textarea,select{width:100%;padding:10px;margin:10px 0}button{background:#0a84ff;color:white;padding:12px;border:none;width:100%;border-radius:8px;font-size:18px}#out{background:#222;padding:15px;margin-top:10px;min-height:60px;border-radius:8px}</style>
+<style>
+body{font-family:Arial;background:#111;color:white;padding:20px;max-width:600px;margin:0 auto}
+textarea,select{width:100%;padding:12px;margin:10px 0;border-radius:8px;border:none;font-size:16px}
+button{background:#0a84ff;color:white;padding:14px;border:none;width:100%;border-radius:8px;font-size:18px;font-weight:bold}
+#out{background:#222;padding:15px;margin-top:12px;min-height:60px;border-radius:8px;white-space:pre-wrap}
+small{color:#aaa}
+h2{margin-bottom:5px}
+</style>
 </head>
 <body>
 <h2>🌐 AI Translation Tool - 17 Languages</h2>
-<p>Built by Eleazar Ofutet | CodeAlpha Internship Oct 2026</p>
+<p><small>Built by Eleazar Ofutet | Cybersecurity Trainee | M.Sc. Anatomical Sciences, University of Abuja</small></p>
+
 <textarea id="txt" rows="3">Hello, how are you?</textarea>
+
 <select id="lang">
 <option value="yo">Yoruba</option>
 <option value="ig">Igbo</option>
@@ -21,20 +30,25 @@
 <option value="ar">Arabic</option>
 <option value="pt">Portuguese</option>
 <option value="zu">Zulu</option>
+<option value="am">Amharic</option>
+<option value="en">English</option>
 </select>
+
 <button onclick="translate()">TRANSLATE</button>
 <div id="out">Translation will appear here...</div>
-<p style="font-size:12px;margin-top:20px">Fixed TooManyRequests error with backup logic | 17 Languages Supported | Student: Built by Sweat</p>
+
+<p style="margin-top:20px"><small>17 Languages Supported: Yoruba, Igbo, Hausa, Hindi, Spanish, French, German, Swahili, Arabic, Portuguese, Zulu, Amharic + more | Built with MyMemory AI Translation API | Volunteer Facilitator - AI Literacy Program - Action Lab for Development</small></p>
+
 <script>
 async function translate(){
 let t=document.getElementById('txt').value;
 let l=document.getElementById('lang').value;
-document.getElementById('out').innerText='Translating...';
+document.getElementById('out').innerText='Translating to '+l+'...';
 try{
 let r=await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(t)}&langpair=en|${l}`);
 let d=await r.json();
-document.getElementById('out').innerText=d.responseData.translatedText||'Translation done!';
-}catch(e){document.getElementById('out').innerText='Offline: '+t+' -> '+l;}
+document.getElementById('out').innerText=d.responseData.translatedText||'Done';
+}catch(e){document.getElementById('out').innerText='Offline demo: '+t+' -> '+l+' language';}
 }
 </script>
 </body>
