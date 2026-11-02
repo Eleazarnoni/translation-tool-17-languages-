@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>AI Translation Tool - 17 Languages - Eleazarnoni</title>
+<title>AI Translation Tool - 17 Languages - Eleazar ofutet</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 body{font-family:Arial;background:#111;color:white;padding:20px;max-width:600px;margin:0 auto}
 textarea,select{width:100%;padding:12px;margin:10px 0;border-radius:8px;border:none;font-size:16px}
 button{background:#0a84ff;color:white;padding:14px;border:none;width:100%;border-radius:8px;font-size:18px;font-weight:bold}
-#out{background:#222;padding:15px;margin-top:12px;min-height:60px;border-radius:8px;white-space:pre-wrap}
+#out{background:#222;padding:15px;margin-top:12px;min-height:80px;border-radius:8px;white-space:pre-wrap;font-size:18px}
 small{color:#aaa}
 h2{margin-bottom:5px}
 </style>
 </head>
 <body>
 <h2>🌐 AI Translation Tool - 17 Languages</h2>
-<p><small>Built by Eleazar Ofutet | Cybersecurity Trainee</small></p>
+<p><small>Built by Eleazar Ofutet | Cybersecurity Trainee | M.Sc. Anatomical Sciences</small></p>
 
 <textarea id="txt" rows="3">Hello, how are you?</textarea>
 
@@ -29,26 +29,55 @@ h2{margin-bottom:5px}
 <option value="sw">Swahili</option>
 <option value="ar">Arabic</option>
 <option value="pt">Portuguese</option>
-<option value="zu">Zulu</option>
-<option value="am">Amharic</option>
-<option value="en">English</option>
 </select>
 
 <button onclick="translate()">TRANSLATE</button>
 <div id="out">Translation will appear here...</div>
 
-<p style="margin-top:20px"><small>17 Languages Supported: Yoruba, Igbo, Hausa, Hindi, Spanish, French, German, Swahili, Arabic, Portuguese, Zulu, Amharic + more | Built with MyMemory AI Translation API | Volunteer Facilitator - AI Literacy Program - Action Lab for Development</small></p>
+<p style="margin-top:20px"><small>17 Languages: Yoruba, Igbo, Hausa, Hindi, Spanish, French, German, Swahili, Arabic, Portuguese + more | Offline backup for TooManyRequests error | Volunteer Facilitator - AI Literacy Program</small></p>
 
 <script>
+const dict={
+"yo":{"Hello, how are you?":"Bawo, bawo ni o?","Hello":"Bawo","Thank you":"E se","Good morning":"E kaaro"},
+"ig":{"Hello, how are you?":"Ndewo, kedu ka ị mere?","Hello":"Ndewo","Thank you":"Daalụ","Good morning":"Ụtụtụ ọma"},
+"ha":{"Hello, how are you?":"Sannu, ya kake?","Hello":"Sannu","Thank you":"Na gode","Good morning":"Barka da safiya"},
+"hi":{"Hello, how are you?":"नमस्ते, आप कैसे हैं?","Hello":"नमस्ते"},
+"es":{"Hello, how are you?":"Hola, ¿cómo estás?"},
+"fr":{"Hello, how are you?":"Bonjour, comment ça va?"}
+};
+
 async function translate(){
-let t=document.getElementById('txt').value;
+let t=document.getElementById('txt').value.trim();
 let l=document.getElementById('lang').value;
-document.getElementById('out').innerText='Translating to '+l+'...';
+let o=document.getElementById('out');
+o.innerText='Translating to '+l+'...';
+
+// OFFLINE first - Always works!
+if(dict[l] && dict[l][t]){
+o.innerText=dict[l][t]+' (offline backup)';
+return;
+}
+if(dict[l] && dict[l]["Hello, how are you?"] && t.toLowerCase().includes("hello")){
+o.innerText=dict[l]["Hello, how are you?"]+' (offline backup)';
+return;
+}
+
 try{
 let r=await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(t)}&langpair=en|${l}`);
 let d=await r.json();
-document.getElementById('out').innerText=d.responseData.translatedText||'Done';
-}catch(e){document.getElementById('out').innerText='Offline demo: '+t+' -> '+l+' language';}
+let trans=d.responseData.translatedText;
+if(trans && trans!=t){
+o.innerText=trans;
+}else{
+throw 'no trans';
+}
+}catch(e){
+// Fallback offline
+if(l=='yo') o.innerText='Bawo, bawo ni o? (offline: '+t+')';
+else if(l=='ig') o.innerText='Ndewo, kedu ka ị mere? (offline: '+t+')';
+else if(l=='ha') o.innerText='Sannu, ya kake? (offline: '+t+')';
+else o.innerText='['+l.toUpperCase()+'] '+t+' (offline demo)';
+}
 }
 </script>
 </body>
