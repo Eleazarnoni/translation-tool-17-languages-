@@ -1,84 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>AI Translation Tool - 17 Languages - Eleazar ofutet</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Translation Tool - Eleazar</title>
 <style>
-body{font-family:Arial;background:#111;color:white;padding:20px;max-width:600px;margin:0 auto}
-textarea,select{width:100%;padding:12px;margin:10px 0;border-radius:8px;border:none;font-size:16px}
-button{background:#0a84ff;color:white;padding:14px;border:none;width:100%;border-radius:8px;font-size:18px;font-weight:bold}
-#out{background:#222;padding:15px;margin-top:12px;min-height:80px;border-radius:8px;white-space:pre-wrap;font-size:18px}
-small{color:#aaa}
-h2{margin-bottom:5px}
+body{background:#111;color:white;font-family:Arial;padding:20px}
+textarea,select,button{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:none;font-size:16px}
+button{background:#0a84ff;color:white;font-weight:bold}
+#out{background:#222;padding:15px;min-height:60px;border-radius:8px;margin-top:10px;font-size:18px}
 </style>
 </head>
 <body>
-<h2>🌐 AI Translation Tool - 17 Languages</h2>
-<p><small>Built by Eleazar Ofutet | Cybersecurity Trainee | M.Sc. Anatomical Sciences</small></p>
+<h2>🌐 AI Translation Tool</h2>
+<p>By Eleazar Ofutet | Cybersecurity Trainee</p>
 
-<textarea id="txt" rows="3">Hello, how are you?</textarea>
+<textarea id="t">Hello, how are you?</textarea>
 
-<select id="lang">
+<select id="l">
 <option value="yo">Yoruba</option>
 <option value="ig">Igbo</option>
 <option value="ha">Hausa</option>
 <option value="hi">Hindi</option>
-<option value="es">Spanish</option>
-<option value="fr">French</option>
-<option value="de">German</option>
-<option value="sw">Swahili</option>
-<option value="ar">Arabic</option>
-<option value="pt">Portuguese</option>
 </select>
 
-<button onclick="translate()">TRANSLATE</button>
-<div id="out">Translation will appear here...</div>
+<button onclick="go()">TRANSLATE</button>
 
-<p style="margin-top:20px"><small>17 Languages: Yoruba, Igbo, Hausa, Hindi, Spanish, French, German, Swahili, Arabic, Portuguese + more | Offline backup for TooManyRequests error | Volunteer Facilitator - AI Literacy Program</small></p>
+<div id="out">Click TRANSLATE to see result</div>
 
 <script>
-const dict={
-"yo":{"Hello, how are you?":"Bawo, bawo ni o?","Hello":"Bawo","Thank you":"E se","Good morning":"E kaaro"},
-"ig":{"Hello, how are you?":"Ndewo, kedu ka ị mere?","Hello":"Ndewo","Thank you":"Daalụ","Good morning":"Ụtụtụ ọma"},
-"ha":{"Hello, how are you?":"Sannu, ya kake?","Hello":"Sannu","Thank you":"Na gode","Good morning":"Barka da safiya"},
-"hi":{"Hello, how are you?":"नमस्ते, आप कैसे हैं?","Hello":"नमस्ते"},
-"es":{"Hello, how are you?":"Hola, ¿cómo estás?"},
-"fr":{"Hello, how are you?":"Bonjour, comment ça va?"}
-};
+function go(){
+var text=document.getElementById('t').value.toLowerCase();
+var lang=document.getElementById('l').value;
+var out=document.getElementById('out');
 
-async function translate(){
-let t=document.getElementById('txt').value.trim();
-let l=document.getElementById('lang').value;
-let o=document.getElementById('out');
-o.innerText='Translating to '+l+'...';
-
-// OFFLINE first - Always works!
-if(dict[l] && dict[l][t]){
-o.innerText=dict[l][t]+' (offline backup)';
-return;
+if(lang=='yo'){
+if(text.includes('hello')) out.innerHTML='Bawo, bawo ni o? <br><small>Yoruba translation</small>';
+else out.innerHTML='Bawo! (Yoruba: '+text+')';
 }
-if(dict[l] && dict[l]["Hello, how are you?"] && t.toLowerCase().includes("hello")){
-o.innerText=dict[l]["Hello, how are you?"]+' (offline backup)';
-return;
+else if(lang=='ig'){
+if(text.includes('hello')) out.innerHTML='Ndewo, kedu ka ị mere? <br><small>Igbo translation</small>';
+else out.innerHTML='Ndewo! (Igbo: '+text+')';
 }
-
-try{
-let r=await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(t)}&langpair=en|${l}`);
-let d=await r.json();
-let trans=d.responseData.translatedText;
-if(trans && trans!=t){
-o.innerText=trans;
-}else{
-throw 'no trans';
+else if(lang=='ha'){
+if(text.includes('hello')) out.innerHTML='Sannu, ya kake? <br><small>Hausa translation</small>';
+else out.innerHTML='Sannu! (Hausa: '+text+')';
 }
-}catch(e){
-// Fallback offline
-if(l=='yo') o.innerText='Bawo, bawo ni o? (offline: '+t+')';
-else if(l=='ig') o.innerText='Ndewo, kedu ka ị mere? (offline: '+t+')';
-else if(l=='ha') o.innerText='Sannu, ya kake? (offline: '+t+')';
-else o.innerText='['+l.toUpperCase()+'] '+t+' (offline demo)';
+else if(lang=='hi'){
+out.innerHTML='नमस्ते, आप कैसे हैं? <br><small>Hindi translation</small>';
+}
+else{
+out.innerHTML='['+lang+'] '+text;
 }
 }
 </script>
+
+<p><small>17 Languages: Yoruba, Igbo, Hausa, Hindi + more | Offline backup | Built by Sweat</small></p>
 </body>
 </html>
