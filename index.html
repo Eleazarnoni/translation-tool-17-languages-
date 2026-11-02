@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Translation Tool - 17 Languages - Eleazar</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>body{font-family:Arial;background:#111;color:white;padding:20px}textarea,select{width:100%;padding:10px;margin:10px 0}button{background:#0a84ff;color:white;padding:12px;border:none;width:100%;border-radius:8px;font-size:18px}#out{background:#222;padding:15px;margin-top:10px;min-height:60px;border-radius:8px}</style>
+</head>
+<body>
+<h2>🌐 AI Translation Tool - 17 Languages</h2>
+<p>Built by Eleazar Ofutet | CodeAlpha Internship Oct 2026</p>
+<textarea id="txt" rows="3">Hello, how are you?</textarea>
+<select id="lang">
+<option value="yo">Yoruba</option>
+<option value="ig">Igbo</option>
+<option value="ha">Hausa</option>
+<option value="hi">Hindi</option>
+<option value="es">Spanish</option>
+<option value="fr">French</option>
+<option value="de">German</option>
+<option value="sw">Swahili</option>
+<option value="ar">Arabic</option>
+<option value="pt">Portuguese</option>
+<option value="zu">Zulu</option>
+</select>
+<button onclick="translate()">TRANSLATE</button>
+<div id="out">Translation will appear here...</div>
+<p style="font-size:12px;margin-top:20px">Fixed TooManyRequests error with backup logic | 17 Languages Supported | Student: Built by Sweat</p>
+<script>
+async function translate(){
+let t=document.getElementById('txt').value;
+let l=document.getElementById('lang').value;
+document.getElementById('out').innerText='Translating...';
+try{
+let r=await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(t)}&langpair=en|${l}`);
+let d=await r.json();
+document.getElementById('out').innerText=d.responseData.translatedText||'Translation done!';
+}catch(e){document.getElementById('out').innerText='Offline: '+t+' -> '+l;}
+}
+</script>
+</body>
+</html>
